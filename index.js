@@ -3,7 +3,6 @@ import Ollama from 'ollama-js-client';
 import spawn from 'child_process';
 
 let potentialAnswers = [];
-let generation = 1;
 
 function prompt(q) {
   const rl = readline.createInterface({
@@ -62,22 +61,20 @@ async function main() {
     url: "http://127.0.0.1:11434/api/",
   });
   let answer = await instance.prompt(`${problem} - This must be coded in pure ${getLangID()}, no external libraries or requirements. Please provide the code, the full code, and nothing but the code. No chit-chat, no markdown, just code.`);
-  let answerParsed = ""
   let problemSolved = false;
   while (problemSolved == false) {
     try {
-      console.log(`Generation ${generation}`)
-      answerParsed = replaceAll(answer.response, "```javascript", "")
+      let answerParsed = replaceAll(answer.response, "```javascript", "")
       answerParsed = replaceAll(answerParsed, "```", "")
       langExec(answerParsed);
       problemSolved = true;
-      generation = generation + 1;
       console.log(answerParsed)
+      return answerParsed;
     } catch (error) {
       answer = await instance.prompt(`There was an error: ${error.message}. Please only provide the code, the full code, and nothing but the code. No chit-chat, no markdown, just code. Also, make sure it's written in ${getLangID()} without any libraries besides included.`)
     }
   }
-  return answerParsed;
+  return 1;
 }
 
 async function aThousand() {
@@ -94,6 +91,7 @@ async function aThousand() {
 
   `
   for (let i = 0; i < 1000; i++) {
+    console.log(`Generation ${i + 1}`)
     let potentialAnswer = await main();
     potentialAnswers.push(potentialAnswer)
   }
