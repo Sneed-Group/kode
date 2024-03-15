@@ -15,7 +15,6 @@ function prompt(q) {
   return new Promise((resolve) => {
     rl.question(`${q}`, function (a) {
       rl.close();
-      console.log("coding!");
       resolve(a);
     });
   });
@@ -24,6 +23,8 @@ function prompt(q) {
 let problem = await prompt("What's the project? (no external libs or reqs): ");
 
 let lang = await prompt("What's the lang? (js, python, ppython [panda3d python]): ");
+
+console.log("coding!");
 
 function langExec(langCode) {
   if (lang == "js") {
