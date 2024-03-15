@@ -3,7 +3,7 @@ import Ollama from 'ollama-js-client';
 import spawn from 'child_process';
 
 let potentialAnswers = [];
-
+let generation = 1;
 
 function prompt(q) {
   const rl = readline.createInterface({
@@ -62,7 +62,6 @@ async function main() {
     url: "http://127.0.0.1:11434/api/",
   });
   let answer = await instance.prompt(`${problem} - This must be coded in pure ${getLangID()}, no external libraries or requirements. Please provide the code, the full code, and nothing but the code. No chit-chat, no markdown, just code.`);
-  let generation = 1;
   let answerParsed = ""
   let problemSolved = false;
   while (problemSolved == false) {
