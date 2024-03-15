@@ -10,8 +10,8 @@
   "main": "index.mjs",
   "type": "module",
   "scripts": {
-    "windows": "npm i && cls && node index.mjs",
-    "nix": "npm i; clear; node index.mjs"
+    "windows": "ollama pull codellama && npm i && cls && node index.mjs",
+    "nix": "ollama pull codellama; npm i; clear; node index.mjs"
   },
   "repository": {
     "type": "git",
