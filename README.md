@@ -15,9 +15,19 @@ Kode is your go-to AI ~~script kiddie~~ coder for coding adventures. Whether you
 ## Dependencies
 
 * Ollama
-* codellama
-* Modern NodeJS LTS
-* all dependencies for this project (hint: ```npm i``` in the directory of Kode.)
+* codellama (will be auto installed)
+* Modern NodeJS LTS (as of writing it's v20)
+* all code dependencies for this project (will be auto installed)
+
+## Installation
+
+* Install NodeJS LTS.
+* Install Ollama.
+* Clone the repo.
+* Change directory into the cloned repo.
+* Run it.
+    * ```npm run windows``` if you are Windows user.
+    * ```npm run nix``` if you're on a Linux or Mac machine.
 
 
 ## Usage
