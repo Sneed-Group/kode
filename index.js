@@ -2,7 +2,6 @@ import readline from 'readline';
 import Ollama from 'ollama-js-client';
 import spawn from 'child_process';
 
-let generation = 1;
 let potentialAnswers = [];
 
 
@@ -62,6 +61,7 @@ function getLangID() {
 let answer = await instance.prompt(`${problem} - This must be coded in pure ${getLangID()}, no external libraries or requirements. Please provide the code, the full code, and nothing but the code. No chit-chat, no markdown, just code.`);
 
 async function main() {
+  let generation = 1;
   let answerParsed = ""
   let problemSolved = false;
   while (problemSolved == false) {
@@ -71,7 +71,7 @@ async function main() {
       langExec(answerParsed);
       problemSolved = true;
       generation = generation + 1;
-      console.log(answerParsed)
+      console.log(answer.response)
     } catch (error) {
       answer = await instance.prompt(`There was an error: ${error.message}. Please only provide the code, the full code, and nothing but the code. No chit-chat, no markdown, just code. Also, make sure it's written in ${getLangID()} without any libraries besides included.`)
     }
