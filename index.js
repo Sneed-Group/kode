@@ -45,11 +45,6 @@ function langExec(langCode) {
   }
 }
 
-const instance = new Ollama({
-  model: "codellama",
-  url: "http://127.0.0.1:11434/api/",
-});
-
 function getLangID() {
   if (lang == "ppython") {
     return "panda3d python"
@@ -60,18 +55,26 @@ function getLangID() {
 
 let answer = await instance.prompt(`${problem} - This must be coded in pure ${getLangID()}, no external libraries or requirements. Please provide the code, the full code, and nothing but the code. No chit-chat, no markdown, just code.`);
 
+function replaceAll(str, find, replace) {
+  return str.replace(new RegExp(find, 'g'), replace);
+}
 async function main() {
+  const instance = new Ollama({
+    model: "codellama",
+    url: "http://127.0.0.1:11434/api/",
+  });
   let generation = 1;
   let answerParsed = ""
   let problemSolved = false;
   while (problemSolved == false) {
     try {
       console.log(`Generation ${generation}`)
-      answerParsed = answer.response.replaceAll("```javascript","").replaceAll("```","");
+      answerParsed = replaceAll(answer.response, "```javascript", "")
+      answerParsed = replaceAll(answerParsed, "```", "")
       langExec(answerParsed);
       problemSolved = true;
       generation = generation + 1;
-      console.log(answer.response)
+      console.log(answerParsed)
     } catch (error) {
       answer = await instance.prompt(`There was an error: ${error.message}. Please only provide the code, the full code, and nothing but the code. No chit-chat, no markdown, just code. Also, make sure it's written in ${getLangID()} without any libraries besides included.`)
     }
