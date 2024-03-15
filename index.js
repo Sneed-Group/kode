@@ -82,6 +82,11 @@ async function main() {
 }
 
 async function aThousand() {
+  const instance = new Ollama({
+    model: "codellama",
+    url: "http://127.0.0.1:11434/api/",
+  });
+
   let potentialAnswersQuestion = `Which answer is best suited for ${problem}?
   If there are two or more answers that are about as equal, but one has lower quality code, choose the one with higher quality code.
   Pick ONLY ONE ANSWER. MUST BE PROGRAMMED IN THE LANGUAGE ${getLangID}!
