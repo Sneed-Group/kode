@@ -7,4 +7,4 @@ Your AI script kiddie.
 * Ollama
 * codellama
 * nodejs
-* all dependencies for this project
+* all dependencies for this project (hint: ```npm i``` in the directory of Kode.)
