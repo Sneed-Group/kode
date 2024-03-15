@@ -18,11 +18,13 @@ function prompt(q) {
   });
 }
 
-let problem = await prompt("What's the project? (no external libs or reqs): ");
+let problem = await prompt("<What's the project? (no external libs or reqs)>: ");
 
-let lang = await prompt("What's the lang? (js, python, ppython [panda3d python]): ");
+let lang = await prompt("<What's the lang? (js, python, ppython [panda3d python])>: ");
 
-console.log("coding!");
+let generations = await prompt("<How many generations? (more generations = more memory used and more time!)>: ");
+generations = Math.ceil(Number(generations))
+console.log("coding, this will take a bit of time!");
 
 function langExec(langCode) {
   if (lang == "js") {
@@ -90,7 +92,7 @@ async function aThousand() {
   Answers:
 
   `
-  for (let i = 0; i < 1000; i++) {
+  for (let i = 0; i < generations; i++) {
     console.log(`Generation ${i + 1}`)
     let potentialAnswer = await main();
     potentialAnswers.push(potentialAnswer)
