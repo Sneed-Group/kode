@@ -7,10 +7,11 @@
   "name": "kode",
   "version": "1.0.0",
   "description": "Feedback loop to help AI code",
-  "main": "index.js",
+  "main": "index.mjs",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "windows": "npm i && cls && node index.mjs",
+    "nix": "npm i; clear; node index.mjs"
   },
   "repository": {
     "type": "git",
