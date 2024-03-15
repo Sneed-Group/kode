@@ -8,7 +8,7 @@ Kode is your go-to AI script kiddie for coding adventures. Whether you're explor
 
 ## Features
 
-- Seamless integration with Ollama and codellama for enhanced coding experiences.
+- Seamless integration with Ollama and codellama for enhanced an enhanced ~~skidding~~ coding experience.
 - Built on modern Node.js LTS for stability and performance.
 - Easy setup with just a few dependencies and simple installation steps.
 
