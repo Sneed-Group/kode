@@ -1,10 +1,10 @@
 # Kode
 
-Your AI script kiddie.
+Your AI ~~script kiddie~~ coder.
 
 ## Overview
 
-Kode is your go-to AI script kiddie for coding adventures. Whether you're exploring new algorithms, experimenting with cutting-edge technologies, or simply need a coding buddy, Kode has got you covered. With its powerful AI capabilities, Kode can assist you in generating, executing, and refining code with ease.
+Kode is your go-to AI ~~script kiddie~~ coder for coding adventures. Whether you're exploring new algorithms, experimenting with cutting-edge technologies, or simply need a coding buddy, Kode has got you covered. With its powerful AI capabilities, Kode can assist you in generating, executing, and refining code with ease.
 
 ## Features
 
