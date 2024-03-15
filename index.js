@@ -67,11 +67,11 @@ async function main() {
   while (problemSolved == false) {
     try {
       console.log(`Generation ${generation}`)
-      console.log(answer.response)
       answerParsed = answer.response.replaceAll("```javascript","").replaceAll("```","");
       langExec(answerParsed);
       problemSolved = true;
       generation = generation + 1;
+      console.log(answerParsed)
     } catch (error) {
       answer = await instance.prompt(`There was an error: ${error.message}. Please only provide the code, the full code, and nothing but the code. No chit-chat, no markdown, just code. Also, make sure it's written in ${getLangID()} without any libraries besides included.`)
     }
@@ -82,7 +82,7 @@ async function main() {
 async function aThousand() {
   let potentialAnswersQuestion = `Which answer is best suited for ${problem}?
   If there are two or more answers that are about as equal, but one has lower quality code, choose the one with higher quality code.
-  Pick ONLY ONE ANSWER.
+  Pick ONLY ONE ANSWER. MUST BE PROGRAMMED IN THE LANGUAGE ${getLangID}!
 
   Answers:
 
