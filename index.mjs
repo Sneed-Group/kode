@@ -1,6 +1,6 @@
 import readline from 'readline';
 import Ollama from 'ollama-js-client';
-import spawn from 'child_process';
+import { spawn } from 'child_process';
 
 let potentialAnswers = [];
 
@@ -29,17 +29,23 @@ console.log("coding, this will take a bit of time!");
 function langExec(langCode) {
   if (lang == "js") {
     return eval(langCode);
-  } else if (lang == "python") {
-    const pythonProcess = spawn('python', ['-c', langCode]);
-    // Handle stderr data from the Python process
-    return pythonProcess.stderr.on('data', (data) => {
-      return Error(`${data}`);
-    });
-  } else if (lang == "ppython") {
-    const ppythonProcess = spawn('ppython', ['-c', langCode]);
-    // Handle stderr data from the Python process
-    return ppythonProcess.stderr.on('data', (data) => {
-      return Error(`${data}`);
+  } else if (lang == "python" || lang == "ppython") {
+    const pythonProcess = spawn(lang, ['-c', langCode]);
+    return new Promise((resolve, reject) => {
+      let output = '';
+      pythonProcess.stdout.on('data', (data) => {
+        output += data.toString();
+      });
+      pythonProcess.stderr.on('data', (data) => {
+        reject(data.toString());
+      });
+      pythonProcess.on('close', (code) => {
+        if (code === 0) {
+          resolve(output);
+        } else {
+          reject(`Process exited with code ${code}`);
+        }
+      });
     });
   } else {
     console.error("Language command not found!")
@@ -57,6 +63,7 @@ function getLangID() {
 function replaceAll(str, find, replace) {
   return str.replace(new RegExp(find, 'g'), replace);
 }
+
 async function main() {
   const instance = new Ollama({
     model: "codellama",
@@ -64,11 +71,11 @@ async function main() {
   });
   let answer = await instance.prompt(`${problem} - This must be coded in pure ${getLangID()}, no external libraries or requirements. Please provide the code, the full code, and nothing but the code. No chit-chat, no markdown, just code.`);
   let problemSolved = false;
-  while (problemSolved == false) {
+  while (!problemSolved) {
     try {
       let answerParsed = replaceAll(answer.response, "```javascript", "")
       answerParsed = replaceAll(answerParsed, "```", "")
-      langExec(answerParsed);
+      await langExec(answerParsed);
       problemSolved = true;
       console.log(answerParsed)
       return answerParsed;
@@ -87,16 +94,18 @@ async function aThousand() {
 
   let potentialAnswersQuestion = `Which answer is best suited for ${problem}?
   If there are two or more answers that are about as equal, but one has lower quality code, choose the one with higher quality code.
-  Pick ONLY ONE ANSWER. MUST BE PROGRAMMED IN THE LANGUAGE ${getLangID}!
+  Pick ONLY ONE ANSWER. MUST BE PROGRAMMED IN THE LANGUAGE ${getLangID()}!
   INCLUDE THE COMPLETE CODE FOR THE CHOSEN ANSWER, AS WELL AS A SHORT DESCRIPTION ON WHY YOU CHOSE IT AND HOW IT WORKS.
   Answers:
 
   `
+
   for (let i = 0; i < generations; i++) {
-    console.log(`Generation ${i + 1}`)
+    console.log(`Generation ${i + 1}`);
     let potentialAnswer = await main();
-    potentialAnswers.push(potentialAnswer)
+    potentialAnswers.push(potentialAnswer);
   }
+
   potentialAnswers.forEach((answer, index) => {
     potentialAnswersQuestion += `
     ----
@@ -105,10 +114,12 @@ async function aThousand() {
     ----
     `;
   });
-  let finalAnswer = await instance.prompt(`${potentialAnswersQuestion}`)
+
+  let finalAnswer = await instance.prompt(`${potentialAnswersQuestion}`);
   let finalAnswerParsed = finalAnswer.response;
   return finalAnswerParsed;
 }
 
 let a = await aThousand();
 console.log(a)
+
